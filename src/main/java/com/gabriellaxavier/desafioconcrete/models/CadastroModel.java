@@ -1,25 +1,39 @@
-package com.gabriellaxavier.desafioconcrete.Entity;
+package com.gabriellaxavier.desafioconcrete.models;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
-public class Login implements Serializable {
+@Entity
+public class CadastroModel implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     private String name;
     private String email;
     private String passwd;
-    private List<Phone> phone;
+    private List<PhoneModel> phone;
+//    private Long token;
+//    private Data created;
+//    private Data modified;
+//    private Timestamp lastLogin;
 
-    public Login(){
+    public CadastroModel(){
     }
 
-    public Login(String id, String name, String email, String passwd, List<Phone> phone) {
+    public CadastroModel(String id, String name, String email, String passwd, List<PhoneModel> phone) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.passwd = passwd;
         this.phone = phone;
+
     }
 
     public String getId() {
@@ -54,25 +68,12 @@ public class Login implements Serializable {
         this.passwd = passwd;
     }
 
-    public List<Phone> getPhone() {
+    public List<PhoneModel> getPhone() {
         return phone;
     }
 
-    public void setPhone(List<Phone> phone) {
+    public void setPhone(List<PhoneModel> phone) {
         this.phone = phone;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Login login = (Login) o;
-        return Objects.equals(id, login.id) &&
-                Objects.equals(passwd, login.passwd);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, passwd);
-    }
 }

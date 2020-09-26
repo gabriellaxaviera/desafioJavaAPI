@@ -15,8 +15,11 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.0'
+
+	implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.21.Final'
+	implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.3.4.RELEASE'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.hsqldb:hsqldb'
+	runtimeOnly 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

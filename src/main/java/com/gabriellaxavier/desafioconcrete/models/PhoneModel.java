@@ -1,12 +1,10 @@
-package com.gabriellaxavier.desafioconcrete.Entity;
+package com.gabriellaxavier.desafioconcrete.models;
 
-import java.io.Serializable;
-
-public class Phone {
+public class PhoneModel {
     private String ddd;
     private String numberPhone;
 
-    public Phone(String ddd, String numberPhone) {
+    public PhoneModel(String ddd, String numberPhone) {
         this.numberPhone = numberPhone;
         this.ddd = ddd;
     }
