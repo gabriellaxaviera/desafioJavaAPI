@@ -17,25 +17,20 @@ public class UserModel implements Serializable {
 
     private String name;
     private String email;
-    private String passwd;
+    private String password;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     private UUID token;
 
-    @ManyToOne
-    private List<PhoneModel> phone = new ArrayList<>();
-//    private Data created;
-//    private Data modified;
-//    private Timestamp lastLogin;
 
     public UserModel(){
     }
 
-    public UserModel(UUID id, String name, String email, String passwd, UUID token) {
+    public UserModel(UUID id, String name, String email, String password, UUID token) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.passwd = passwd;
+        this.password = password;
         this.token = token;
     }
 
@@ -64,19 +59,11 @@ public class UserModel implements Serializable {
     }
 
     public String getPasswd() {
-        return passwd;
+        return password;
     }
 
     public void setPasswd(String passwd) {
-        this.passwd = passwd;
-    }
-
-    public List<PhoneModel> getPhone() {
-        return phone;
-    }
-
-    public void setPhone(List<PhoneModel> phone) {
-        this.phone = phone;
+        this.password = passwd;
     }
 
     public UUID getToken() {
@@ -94,12 +81,12 @@ public class UserModel implements Serializable {
         UserModel userModel = (UserModel) o;
         return Objects.equals(id, userModel.id) &&
                 Objects.equals(email, userModel.email) &&
-                Objects.equals(passwd, userModel.passwd) &&
+                Objects.equals(password, userModel.password) &&
                 Objects.equals(token, userModel.token);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, passwd, token);
+        return Objects.hash(id, email, password, token);
     }
 }
