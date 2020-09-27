@@ -19,7 +19,7 @@ public class Register {
     public ResponseEntity<UserModel> insert (@RequestBody UserModel obj)
     {
         obj = service.insert(obj);
-        return ResponseEntity.accepted().body(obj);
+        return ResponseEntity.status(201).body(obj);
     }
 }
 

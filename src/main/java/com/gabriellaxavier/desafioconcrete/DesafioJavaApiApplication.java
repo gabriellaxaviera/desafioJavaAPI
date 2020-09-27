@@ -13,29 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DesafioJavaApiApplication {
 
-	/*@Autowired
-	private UserRepository userRepo;*/
-
 	public static void main(String[] args) {
 		SpringApplication.run(DesafioJavaApiApplication.class, args);
 	}
 
-	/*@Override
-	public void run(String... args) throws Exception {
-
-		List<PhoneModel> listPhone = new ArrayList<>();
-		listPhone.add(new PhoneModel("81", "995784030"));
-		listPhone.add(new PhoneModel("81", "995488241"));
-
-		UserModel cad1 = new UserModel(null,"gabriella","gabriella@teste.com","123456teste",null);
-
-		String sha256hex = Hashing.sha256()
-				.hashString(cad1.getPasswd(), StandardCharsets.UTF_8)
-				.toString();
-
-		cad1.setPasswd(sha256hex);
-
-		userRepo.save(cad1);
-
-	}*/
 }

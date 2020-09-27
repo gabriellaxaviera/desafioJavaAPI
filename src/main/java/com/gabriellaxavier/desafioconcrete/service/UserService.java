@@ -35,6 +35,15 @@ public class UserService {
         obj.setPassword(sha256hex);
         obj.setCreated(localDateTime);
         obj.setLast_login(localDateTime);
+        obj.setModified(localDateTime);
+
+        return repo.save(obj);
+    }
+
+    public UserModel update(UserModel obj) {
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        obj.setLast_login(localDateTime);
 
         return repo.save(obj);
     }
