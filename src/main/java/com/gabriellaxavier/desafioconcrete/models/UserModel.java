@@ -1,8 +1,12 @@
 package com.gabriellaxavier.desafioconcrete.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,19 +23,22 @@ public class UserModel implements Serializable {
     private String email;
     private String password;
 
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID token;
 
+    @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
+    private LocalDateTime created;
 
     public UserModel(){
     }
 
-    public UserModel(UUID id, String name, String email, String password, UUID token) {
+    public UserModel(UUID id, String name, String email, String password, UUID token, LocalDateTime created) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.token = token;
+        this.created = created;
     }
 
     public UUID getId() {
@@ -72,6 +79,14 @@ public class UserModel implements Serializable {
 
     public void setToken(UUID token) {
         this.token = token;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     @Override

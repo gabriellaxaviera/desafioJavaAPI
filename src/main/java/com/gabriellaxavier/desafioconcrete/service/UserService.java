@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -15,7 +19,7 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
-    public Optional<UserModel> buscar(String id){
+    public Optional<UserModel> find(String id){
 
         Optional<UserModel> obj = repo.findById(id);
         return obj;
@@ -26,7 +30,10 @@ public class UserService {
                 .hashString(obj.getPasswd(), StandardCharsets.UTF_8)
                 .toString();
 
+        LocalDateTime localDateTime = LocalDateTime.now();
+
         obj.setPasswd(sha256hex);
+        obj.setCreated(localDateTime);
 
         return repo.save(obj);
     }

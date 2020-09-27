@@ -16,7 +16,7 @@ public class Register {
     private UserService service;
 
     @RequestMapping(value = "/cadastro", method = RequestMethod.POST)
-    public ResponseEntity<?> insert (@RequestBody UserModel obj)
+    public ResponseEntity<UserModel> insert (@RequestBody UserModel obj)
     {
         obj = service.insert(obj);
         return ResponseEntity.accepted().body(obj);
