@@ -1,22 +1,23 @@
 package com.gabriellaxavier.desafioconcrete;
 
-import com.gabriellaxavier.desafioconcrete.models.CadastroModel;
+import com.gabriellaxavier.desafioconcrete.models.UserModel;
 import com.gabriellaxavier.desafioconcrete.models.PhoneModel;
 import com.gabriellaxavier.desafioconcrete.repository.UserRepository;
+import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 public class DesafioJavaApiApplication implements CommandLineRunner {
 
-	//@Autowired
-	//private UserRepository userRepo;
+	@Autowired
+	private UserRepository userRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DesafioJavaApiApplication.class, args);
@@ -25,12 +26,19 @@ public class DesafioJavaApiApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		/*List<PhoneModel> listPhone = new ArrayList<>();
+		List<PhoneModel> listPhone = new ArrayList<>();
 		listPhone.add(new PhoneModel("81", "995784030"));
 
-		CadastroModel cad1 = new CadastroModel(null,"gabriella","gabriella@teste.com","",listPhone);
+		UserModel cad1 = new UserModel(null,"gabriella","gabriella@teste.com","123456teste",null);
 
-		userRepo.save(cad1);*/
+		String sha256hex = Hashing.sha256()
+				.hashString(cad1.getPasswd(), StandardCharsets.UTF_8)
+				.toString();
+
+		cad1.setPasswd(sha256hex);
+		cad1.setPhone(listPhone);
+
+		userRepo.save(cad1);
 
 	}
 }

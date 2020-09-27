@@ -1,6 +1,6 @@
 package com.gabriellaxavier.desafioconcrete.controllers;
 
-import com.gabriellaxavier.desafioconcrete.models.CadastroModel;
+import com.gabriellaxavier.desafioconcrete.models.UserModel;
 import com.gabriellaxavier.desafioconcrete.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(value = "/cadastro")
-public class Cadastro {
+public class Register {
 
     @Autowired
     private UserService service;
@@ -19,7 +21,7 @@ public class Cadastro {
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable String id){
 
-        CadastroModel obj = service.buscar(id);
+        Optional<UserModel> obj = service.buscar(id);
         return ResponseEntity.ok().body(obj);
 
 //        List<PhoneModel> listPhone = new ArrayList<>();

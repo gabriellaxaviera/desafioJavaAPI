@@ -1,5 +1,11 @@
 package com.gabriellaxavier.desafioconcrete.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.ManyToAny;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 public class PhoneModel {
     private String ddd;
     private String numberPhone;
