@@ -27,13 +27,14 @@ public class UserService {
 
     public UserModel insert(UserModel obj) {
         String sha256hex = Hashing.sha256()
-                .hashString(obj.getPasswd(), StandardCharsets.UTF_8)
+                .hashString(obj.getPassword(), StandardCharsets.UTF_8)
                 .toString();
 
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        obj.setPasswd(sha256hex);
+        obj.setPassword(sha256hex);
         obj.setCreated(localDateTime);
+        obj.setLast_login(localDateTime);
 
         return repo.save(obj);
     }

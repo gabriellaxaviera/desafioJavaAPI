@@ -2,6 +2,9 @@ package com.gabriellaxavier.desafioconcrete.models;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.id.UUIDGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,22 +26,25 @@ public class UserModel implements Serializable {
     private String email;
     private String password;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID token;
+    private UUID token = UUID.randomUUID();
 
     @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
     private LocalDateTime created;
 
+    @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
+    private LocalDateTime last_login;
+
     public UserModel(){
     }
 
-    public UserModel(UUID id, String name, String email, String password, UUID token, LocalDateTime created) {
+    public UserModel(UUID id, String name, String email, String password, UUID token, LocalDateTime created, LocalDateTime last_login) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.token = token;
         this.created = created;
+        this.last_login = last_login;
     }
 
     public UUID getId() {
@@ -65,12 +71,12 @@ public class UserModel implements Serializable {
         this.email = email;
     }
 
-    public String getPasswd() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPasswd(String passwd) {
-        this.password = passwd;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UUID getToken() {
@@ -87,6 +93,14 @@ public class UserModel implements Serializable {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public LocalDateTime getLast_login() {
+        return last_login;
+    }
+
+    public void setLast_login(LocalDateTime last_login) {
+        this.last_login = last_login;
     }
 
     @Override
