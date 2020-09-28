@@ -36,7 +36,7 @@ public class UserModel implements Serializable {
     //@ElementCollection
     //@CollectionTable(name = "phones")
     //private Set<String> phone = new HashSet<>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PhoneModel> phones = new ArrayList<>();
 
     public UserModel(){

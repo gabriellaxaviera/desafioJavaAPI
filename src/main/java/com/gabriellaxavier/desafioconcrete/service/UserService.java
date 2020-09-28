@@ -32,10 +32,15 @@ public class UserService {
         return obj;
     }
 
-    @Transactional
-    public UserModel insert(UserModel obj) {
+    public UserModel insert(UserModel user) {
+
+        UserModel obj = new UserModel();
+        obj.setName(user.getName());
+        obj.setEmail(user.getEmail());
+        obj.setToken(user.getToken());
+
         String sha256hex = Hashing.sha256()
-                .hashString(obj.getPassword(), StandardCharsets.UTF_8)
+                .hashString(user.getPassword(), StandardCharsets.UTF_8)
                 .toString();
 
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -45,16 +50,12 @@ public class UserService {
         obj.setLast_login(localDateTime);
         obj.setModified(localDateTime);
 
-        obj = repo.save(obj);
+        for (PhoneModel phone: user.getPhones()) {
 
-        phoneRepo.saveAll(obj.getPhones());
-        //phoneRepo.save(obj.getPhones().get(0));
-
-
-
-        /*for (PhoneModel phone : obj.getPhones()) {
-            obj.addPhones(phone);
-        }*/
+            PhoneModel objPhone = phone;
+            objPhone.setUser(obj);
+            obj.getPhones().add(objPhone);
+        }
 
         return repo.save(obj) ;
     }
