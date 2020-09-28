@@ -60,6 +60,8 @@ public class UserService {
     public UserModel login(LoginDTO loginDTO) {
 
         UserModel user = repo.findByEmail(loginDTO.getEmail());
+        System.out.println(user);
+
         if (user != null) //se existe no banco
         {
             user.getEmail();
@@ -88,10 +90,7 @@ public class UserService {
         else
         {
             System.out.println("Email nao existe");
-
-            System.out.println(user.getEmail());
-            System.out.println(loginDTO.getEmail());
-            return user = null;
+            return user;
         }
     }
 
