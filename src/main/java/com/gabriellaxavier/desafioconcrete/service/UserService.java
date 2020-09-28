@@ -5,6 +5,7 @@ import com.gabriellaxavier.desafioconcrete.models.PhoneModel;
 import com.gabriellaxavier.desafioconcrete.models.UserModel;
 import com.gabriellaxavier.desafioconcrete.repository.PhoneRepository;
 import com.gabriellaxavier.desafioconcrete.repository.UserRepository;
+import com.gabriellaxavier.desafioconcrete.validation.EmailValidation;
 import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,12 +57,42 @@ public class UserService {
         return repo.save(obj) ;
     }
 
-    public Optional<UserModel> login(LoginDTO loginDTO) {
+    public UserModel login(LoginDTO loginDTO) {
 
-        loginDTO.setPassword(Hashing.sha256()
-                .hashString(loginDTO.getPassword(), StandardCharsets.UTF_8)
-                .toString());
+        UserModel user = repo.findByEmail(loginDTO.getEmail());
+        if (user != null) //se existe no banco
+        {
+            user.getEmail();
+            loginDTO.getEmail();
 
-        return repo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+            loginDTO.setPassword(Hashing.sha256()
+                    .hashString(loginDTO.getPassword(), StandardCharsets.UTF_8)
+                    .toString());
+
+            if (user.getPassword().equals(loginDTO.getPassword()))
+            {
+                System.out.println("senhas iguais");
+                System.out.println(user.getPassword());
+                System.out.println(loginDTO.getPassword());
+                return repo.findByEmail(loginDTO.getEmail());
+            }
+            else
+            {
+                System.out.println("senhas diferentes");
+                System.out.println(user.getPassword());
+                System.out.println(loginDTO.getPassword());
+                return user = null;
+            }
+
+        }
+        else
+        {
+            System.out.println("Email nao existe");
+
+            System.out.println(user.getEmail());
+            System.out.println(loginDTO.getEmail());
+            return user = null;
+        }
     }
+
 }

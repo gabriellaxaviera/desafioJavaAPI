@@ -23,6 +23,9 @@ public class PhoneModel implements Serializable {
 
     private String number;
 
+    public PhoneModel() {
+    }
+
     public PhoneModel(UUID id, String ddd, String number, UserModel user) {
         this.id = id;
         this.number = number;

@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, String> {
     Optional<UserModel> findById(String id);
 
-    Optional<UserModel> findByEmailAndPassword(String email, String password);
+    UserModel findByEmail(String email);
+
 }
