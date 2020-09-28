@@ -1,14 +1,15 @@
 package com.gabriellaxavier.desafioconcrete.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-public class PhoneModel {
+public class PhoneModel implements Serializable {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -19,11 +20,13 @@ public class PhoneModel {
 
     private String ddd;
 
-    private String numberPhone;
+    private String number;
 
-    public PhoneModel(String ddd, String numberPhone) {
-        this.numberPhone = numberPhone;
+    public PhoneModel(UUID id, String ddd, String number, UserModel user) {
+        this.id = id;
+        this.number = number;
         this.ddd = ddd;
+        this.user = user;
     }
 
     public String getDdd() {
@@ -34,20 +37,12 @@ public class PhoneModel {
         this.ddd = ddd;
     }
 
-    public String getNumberPhone() {
-        return numberPhone;
+    public String getNumber() {
+        return number;
     }
 
-    public void setNumberPhone(String numberPhone) {
-        this.numberPhone = numberPhone;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public UserModel getUser() {

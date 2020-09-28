@@ -2,21 +2,14 @@ package com.gabriellaxavier.desafioconcrete.models;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.core.JsonGenerator;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.id.UUIDGenerator;
-import org.springframework.boot.json.JsonParser;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class UserModel implements Serializable {
@@ -43,7 +36,7 @@ public class UserModel implements Serializable {
     //@ElementCollection
     //@CollectionTable(name = "phones")
     //private Set<String> phone = new HashSet<>();
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PhoneModel> phones = new ArrayList<>();
 
     public UserModel(){
@@ -146,5 +139,10 @@ public class UserModel implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, email, password, token);
+    }
+
+    public void addPhones(PhoneModel phone){
+        phone.setUser(this);
+        this.getPhones().add(phone);
     }
 }
