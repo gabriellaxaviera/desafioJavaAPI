@@ -1,12 +1,14 @@
 package com.gabriellaxavier.desafioconcrete.service;
 
+import com.gabriellaxavier.desafioconcrete.controllers.Perfil;
 import com.gabriellaxavier.desafioconcrete.dto.LoginDTO;
+import com.gabriellaxavier.desafioconcrete.dto.PerfilDTO;
 import com.gabriellaxavier.desafioconcrete.models.PhoneModel;
 import com.gabriellaxavier.desafioconcrete.models.UserModel;
 import com.gabriellaxavier.desafioconcrete.repository.PhoneRepository;
 import com.gabriellaxavier.desafioconcrete.repository.UserRepository;
-import com.gabriellaxavier.desafioconcrete.validation.EmailValidation;
 import com.google.common.hash.Hashing;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +25,41 @@ public class UserService {
     @Autowired
     private PhoneRepository phoneRepo;
 
-    public Optional<UserModel> find(String id){
+    public UserModel find(UUID id){
 
-        Optional<UserModel> obj = repo.findById(id);
+        UserModel obj = repo.findById(id);
         return obj;
+    }
+
+    public UserModel perfil(PerfilDTO perfilDTO){
+
+        UserModel user = repo.findByToken(perfilDTO.getToken());
+
+        System.out.print("HEADER REQ ");
+        System.out.println(perfilDTO.getToken()); //HEADER
+        System.out.print("HEADER BANCO ");
+        System.out.println(user.getToken()); //BANCO
+
+        if (user != null)
+        {
+            UserModel userId = repo.findById(perfilDTO.getId());
+
+            if (userId.getToken().equals(perfilDTO.getToken()))
+            {
+                System.out.println("TOKENS IGUAIS ");
+            }
+            else
+            {
+                System.out.println("NAO AUTORIZADO TOKEN DIFERENTE");
+            }
+
+        }
+        else
+        {
+            System.out.println("NÃO AUTORIZADO");
+            return null;
+        }
+        return null;
     }
 
     public UserModel insert(UserModel user) {

@@ -8,16 +8,14 @@ import java.util.UUID;
 public class LoginDTO implements Serializable {
 
     private UUID id;
-    private UUID token;
     private String email;
     private String password;
 
     public LoginDTO() {
     }
 
-    public LoginDTO(UUID id, UUID token, String email, String password) {
+    public LoginDTO(UUID id, String email, String password) {
         this.id = id;
-        this.token = token;
         this.email = email;
         this.password = password;
     }
@@ -28,14 +26,6 @@ public class LoginDTO implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public UUID getToken() {
-        return token;
-    }
-
-    public void setToken(UUID token) {
-        this.token = token;
     }
 
     public String getEmail() {
@@ -56,7 +46,6 @@ public class LoginDTO implements Serializable {
 
     public LoginDTO(UserModel obj){
         id = obj.getId();
-        token = obj.getToken();
         email = obj.getEmail();
         password = obj.getPassword();
     }
