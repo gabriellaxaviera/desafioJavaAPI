@@ -24,19 +24,16 @@ public class UserModel implements Serializable {
 
     private UUID token = UUID.randomUUID();
 
-    @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime created;
 
-    @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime modified;
 
-    @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime last_login;
 
-    //@ElementCollection
-    //@CollectionTable(name = "phones")
-    //private Set<String> phone = new HashSet<>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PhoneModel> phones = new ArrayList<>();
 
     public UserModel(){

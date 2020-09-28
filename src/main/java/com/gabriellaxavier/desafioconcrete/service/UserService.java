@@ -1,5 +1,6 @@
 package com.gabriellaxavier.desafioconcrete.service;
 
+import com.gabriellaxavier.desafioconcrete.dto.LoginDTO;
 import com.gabriellaxavier.desafioconcrete.models.PhoneModel;
 import com.gabriellaxavier.desafioconcrete.models.UserModel;
 import com.gabriellaxavier.desafioconcrete.repository.PhoneRepository;
@@ -8,13 +9,8 @@ import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.beans.Transient;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -60,11 +56,12 @@ public class UserService {
         return repo.save(obj) ;
     }
 
-    public UserModel update(UserModel obj) {
+    public Optional<UserModel> login(LoginDTO loginDTO) {
 
-        LocalDateTime localDateTime = LocalDateTime.now();
-        obj.setLast_login(localDateTime);
+        loginDTO.setPassword(Hashing.sha256()
+                .hashString(loginDTO.getPassword(), StandardCharsets.UTF_8)
+                .toString());
 
-        return repo.save(obj);
+        return repo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
     }
 }
