@@ -22,7 +22,6 @@ public class Perfil {
     public ResponseEntity<UserModel> profile (PerfilDTO perfilDTO, @RequestHeader(value = "Token") UUID token , @PathVariable UUID id)
     {
         perfilDTO.setToken(token);
-        perfilDTO.setLast_login(LocalDateTime.now());
         UserModel tokenFound = service.perfil(perfilDTO);
         return ResponseEntity.status(202).body(tokenFound);
     }

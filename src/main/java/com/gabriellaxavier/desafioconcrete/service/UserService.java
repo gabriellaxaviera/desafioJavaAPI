@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -47,6 +49,8 @@ public class UserService {
             if (userId.getToken().equals(perfilDTO.getToken()))
             {
                 System.out.println("TOKENS IGUAIS ");
+
+                long diff = ChronoUnit.MINUTES.between(userId.getLast_login(),perfilDTO.getLast_login());
             }
             else
             {
