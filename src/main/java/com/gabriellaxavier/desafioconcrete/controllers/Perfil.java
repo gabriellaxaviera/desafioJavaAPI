@@ -19,10 +19,10 @@ public class Perfil {
     UserService service;
 
     @RequestMapping(value = "/userprofile/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserModel> profile (PerfilDTO perfilDTO, @RequestHeader(value = "Token") UUID token , @PathVariable UUID id)
+    public ResponseEntity<UserModel> userprofile (PerfilDTO perfilDTO, @RequestHeader(value = "Token") UUID token , @PathVariable UUID id)
     {
         perfilDTO.setToken(token);
-        UserModel tokenFound = service.perfil(perfilDTO);
+        UserModel tokenFound = service.profile(perfilDTO);
         return ResponseEntity.status(202).body(tokenFound);
     }
 }

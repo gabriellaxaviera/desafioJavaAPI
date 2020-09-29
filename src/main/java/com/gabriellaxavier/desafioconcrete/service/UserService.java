@@ -33,7 +33,7 @@ public class UserService {
         return obj;
     }
 
-    public UserModel perfil(PerfilDTO perfilDTO){
+    public UserModel profile(PerfilDTO perfilDTO){
 
         UserModel user = repo.findByToken(perfilDTO.getToken());
 
@@ -50,7 +50,6 @@ public class UserService {
             {
                 System.out.println("TOKENS IGUAIS ");
 
-                long diff = ChronoUnit.MINUTES.between(userId.getLast_login(),perfilDTO.getLast_login());
             }
             else
             {
@@ -68,30 +67,40 @@ public class UserService {
 
     public UserModel insert(UserModel user) {
 
-        UserModel obj = new UserModel();
-        obj.setName(user.getName());
-        obj.setEmail(user.getEmail());
-        obj.setToken(user.getToken());
+        UserModel userCad = repo.findByEmail(user.getEmail());
+        System.out.println(userCad);
 
-        String sha256hex = Hashing.sha256()
-                .hashString(user.getPassword(), StandardCharsets.UTF_8)
-                .toString();
+        if (userCad == null) {
 
-        LocalDateTime localDateTime = LocalDateTime.now();
+            UserModel obj = new UserModel();
+            obj.setName(user.getName());
+            obj.setEmail(user.getEmail());
+            obj.setToken(user.getToken());
 
-        obj.setPassword(sha256hex);
-        obj.setCreated(localDateTime);
-        obj.setLast_login(localDateTime);
-        obj.setModified(localDateTime);
+            String sha256hex = Hashing.sha256()
+                    .hashString(user.getPassword(), StandardCharsets.UTF_8)
+                    .toString();
 
-        for (PhoneModel phone: user.getPhones()) {
+            LocalDateTime localDateTime = LocalDateTime.now();
 
-            PhoneModel objPhone = phone;
-            objPhone.setUser(obj);
-            obj.getPhones().add(objPhone);
+            obj.setPassword(sha256hex);
+            obj.setCreated(localDateTime);
+            obj.setLast_login(localDateTime);
+            obj.setModified(localDateTime);
+
+            for (PhoneModel phone : user.getPhones()) {
+
+                PhoneModel objPhone = phone;
+                objPhone.setUser(obj);
+                obj.getPhones().add(objPhone);
+            }
+            return repo.save(obj);
         }
-
-        return repo.save(obj) ;
+        else
+        {
+            System.out.println("EMAIL JA CADASTRADO");
+        }
+        return null;
     }
 
     public UserModel login(LoginDTO loginDTO) {
