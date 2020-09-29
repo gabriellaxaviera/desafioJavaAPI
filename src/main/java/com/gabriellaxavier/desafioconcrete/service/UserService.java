@@ -10,11 +10,13 @@ import com.gabriellaxavier.desafioconcrete.repository.UserRepository;
 import com.google.common.hash.Hashing;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -49,6 +51,30 @@ public class UserService {
             if (userId.getToken().equals(perfilDTO.getToken()))
             {
                 System.out.println("TOKENS IGUAIS ");
+                perfilDTO.setLast_login(LocalDateTime.now());
+
+                //verificar hora aqui
+                Integer userH = userId.getLast_login().getHour();
+                Integer perfilH = perfilDTO.getLast_login().getHour();
+                Integer diffH = perfilH-userH;
+                System.out.println(diffH);
+
+                Integer userM = userId.getLast_login().getMinute();
+                Integer perfilM = perfilDTO.getLast_login().getMinute();
+                Integer diffM = perfilM-userM;
+                System.out.println(diffM);
+
+                if (diffH == 0)
+                {
+                    if (diffM >= 30)
+                    {
+                        System.out.println("SESSAO INVALIDA");
+                    }
+                }
+                else
+                {
+                    System.out.println("SESSÃO INVALIDA");
+                }
 
             }
             else
