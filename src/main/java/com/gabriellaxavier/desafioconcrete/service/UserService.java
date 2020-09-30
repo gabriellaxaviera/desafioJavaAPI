@@ -1,23 +1,20 @@
 package com.gabriellaxavier.desafioconcrete.service;
 
-import com.gabriellaxavier.desafioconcrete.controllers.Perfil;
 import com.gabriellaxavier.desafioconcrete.dto.LoginDTO;
 import com.gabriellaxavier.desafioconcrete.dto.PerfilDTO;
+import com.gabriellaxavier.desafioconcrete.error.EmailExistsException;
+import com.gabriellaxavier.desafioconcrete.error.UnauthorizedException;
+import com.gabriellaxavier.desafioconcrete.error.ResourceNotFoundException;
 import com.gabriellaxavier.desafioconcrete.models.PhoneModel;
 import com.gabriellaxavier.desafioconcrete.models.UserModel;
 import com.gabriellaxavier.desafioconcrete.repository.PhoneRepository;
 import com.gabriellaxavier.desafioconcrete.repository.UserRepository;
 import com.google.common.hash.Hashing;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -32,69 +29,70 @@ public class UserService {
     public UserModel find(UUID id){
 
         UserModel obj = repo.findById(id);
+        if(obj != null)
+        {
         return obj;
+        }
+
+        else
+        {
+            throw new ResourceNotFoundException("Usuário nao encontrado");
+        }
     }
 
     public UserModel profile(PerfilDTO perfilDTO){
 
         UserModel user = repo.findByToken(perfilDTO.getToken());
 
-        System.out.print("HEADER REQ ");
-        System.out.println(perfilDTO.getToken()); //HEADER
-        System.out.print("HEADER BANCO ");
-        System.out.println(user.getToken()); //BANCO
-
         if (user != null)
         {
             UserModel userId = repo.findById(perfilDTO.getId());
 
-            if (userId.getToken().equals(perfilDTO.getToken()))
+            if (userId != null)
             {
-                System.out.println("TOKENS IGUAIS ");
-                perfilDTO.setLast_login(LocalDateTime.now());
-
-                //verificar hora aqui
-                Integer userH = userId.getLast_login().getHour();
-                Integer perfilH = perfilDTO.getLast_login().getHour();
-                Integer diffH = perfilH-userH;
-                System.out.println(diffH);
-
-                Integer userM = userId.getLast_login().getMinute();
-                Integer perfilM = perfilDTO.getLast_login().getMinute();
-                Integer diffM = perfilM-userM;
-                System.out.println(diffM);
-
-                if (diffH == 0)
+                if (userId.getToken().equals(perfilDTO.getToken()))
                 {
-                    if (diffM >= 30)
+                    perfilDTO.setLast_login(LocalDateTime.now());
+                    //Update lastLogin
+
+                    Integer userH = userId.getLast_login().getHour();
+                    Integer perfilH = perfilDTO.getLast_login().getHour();
+                    Integer diffH = perfilH-userH;
+
+                    Integer userM = userId.getLast_login().getMinute();
+                    Integer perfilM = perfilDTO.getLast_login().getMinute();
+                    Integer diffM = perfilM-userM;
+
+                    if (diffH == 0 && diffM <= 30 )
                     {
-                        System.out.println("SESSAO INVALIDA");
+                        return user;
                     }
+                    else
+                    {
+                        throw new UnauthorizedException("Sessão Inválida");
+                    }
+
                 }
                 else
                 {
-                    System.out.println("SESSÃO INVALIDA");
+                    throw new UnauthorizedException("Não autorizado");
                 }
-
             }
             else
             {
-                System.out.println("NAO AUTORIZADO TOKEN DIFERENTE");
+                throw new UnauthorizedException("Usuário inexistente");
             }
 
         }
         else
         {
-            System.out.println("NÃO AUTORIZADO");
-            return null;
+            throw new UnauthorizedException("Nao autorizado");
         }
-        return null;
     }
 
     public UserModel insert(UserModel user) {
 
         UserModel userCad = repo.findByEmail(user.getEmail());
-        System.out.println(userCad);
 
         if (userCad == null) {
 
@@ -124,15 +122,13 @@ public class UserService {
         }
         else
         {
-            System.out.println("EMAIL JA CADASTRADO");
+            throw new EmailExistsException("Email já existente");
         }
-        return null;
     }
 
     public UserModel login(LoginDTO loginDTO) {
 
         UserModel user = repo.findByEmail(loginDTO.getEmail());
-        System.out.println(user);
 
         if (user != null) //se existe no banco
         {
@@ -145,24 +141,16 @@ public class UserService {
 
             if (user.getPassword().equals(loginDTO.getPassword()))
             {
-                System.out.println("senhas iguais");
-                System.out.println(user.getPassword());
-                System.out.println(loginDTO.getPassword());
                 return repo.findByEmail(loginDTO.getEmail());
             }
             else
             {
-                System.out.println("senhas diferentes");
-                System.out.println(user.getPassword());
-                System.out.println(loginDTO.getPassword());
-                return user = null;
+                throw new UnauthorizedException("Usuário e/ou senha inválidos");
             }
-
         }
         else
         {
-            System.out.println("Email nao existe");
-            return user;
+            throw new ResourceNotFoundException("Usuário e/ou senha inválidos");
         }
     }
 
