@@ -3,8 +3,10 @@ package com.gabriellaxavier.desafioconcrete.handler;
 import com.gabriellaxavier.desafioconcrete.error.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -42,4 +44,14 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(exceptionDetails, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(HttpMediaTypeException.class)
+    public ResponseEntity<?> handleMediaType(HttpMediaTypeException media){
+
+        ExceptionDetails exceptionDetails = ExceptionDetails.ResourceNotFoundBuilder
+                .newBuilder()
+                .message(media.getMessage())
+                .build();
+
+        return new ResponseEntity<>(exceptionDetails, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
 }

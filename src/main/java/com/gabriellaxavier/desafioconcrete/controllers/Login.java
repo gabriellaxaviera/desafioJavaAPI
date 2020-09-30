@@ -19,7 +19,7 @@ public class Login {
     @Autowired
     private UserService service;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = {"application/json"})
     public ResponseEntity<UserModel> login (@RequestBody LoginDTO loginDTO)
     {
         UserModel userFound = service.login(loginDTO);
