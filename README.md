@@ -16,18 +16,18 @@ https://desafio-java-api-gabriella.herokuapp.com/
 
 - Deve receber o seguinte body:
 
-
-    {
-        "name": "João da Silva",
-        "email": "joao@silva.org",
-        "password": "hunter2",
-        "phones": [
-            {
-                "number": "987654321",
-                "ddd": "21"
-            }
-        ]
-    }
+    
+        {
+            "name": "João da Silva",
+            "email": "joao@silva.org",
+            "password": "hunter2",
+            "phones": [
+                {
+                    "number": "987654321",
+                    "ddd": "21"
+                }
+            ]
+        }
     
 Observando que, um ou mais números de telefone, devem estar no mesmo formato que o do exemplo acima.
   
