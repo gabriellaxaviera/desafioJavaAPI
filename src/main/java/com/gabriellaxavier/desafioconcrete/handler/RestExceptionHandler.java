@@ -3,10 +3,13 @@ package com.gabriellaxavier.desafioconcrete.handler;
 import com.gabriellaxavier.desafioconcrete.error.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -53,5 +56,27 @@ public class RestExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(exceptionDetails, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleNotRedable(HttpMessageNotReadableException read){
+
+        ExceptionDetails exceptionDetails = ExceptionDetails.ResourceNotFoundBuilder
+                .newBuilder()
+                .message(read.getMessage())
+                .build();
+
+        return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> handleArgument(HttpMessageNotReadableException argument){
+
+        ExceptionDetails exceptionDetails = ExceptionDetails.ResourceNotFoundBuilder
+                .newBuilder()
+                .message(argument.getMessage())
+                .build();
+
+        return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
     }
 }

@@ -53,13 +53,12 @@ public class UserService {
                 if (userId.getToken().equals(perfilDTO.getToken()))
                 {
                     perfilDTO.setLast_login(LocalDateTime.now());
-                    //Update lastLogin
 
-                    Integer userH = userId.getLast_login().getHour();
+                    Integer userH = user.getLast_login().getHour();
                     Integer perfilH = perfilDTO.getLast_login().getHour();
                     Integer diffH = perfilH-userH;
 
-                    Integer userM = userId.getLast_login().getMinute();
+                    Integer userM = user.getLast_login().getMinute();
                     Integer perfilM = perfilDTO.getLast_login().getMinute();
                     Integer diffM = perfilM-userM;
 
@@ -130,7 +129,7 @@ public class UserService {
 
         UserModel user = repo.findByEmail(loginDTO.getEmail());
 
-        if (user != null) //se existe no banco
+        if (user != null)
         {
             user.getEmail();
             loginDTO.getEmail();
@@ -141,7 +140,10 @@ public class UserService {
 
             if (user.getPassword().equals(loginDTO.getPassword()))
             {
-                return repo.findByEmail(loginDTO.getEmail());
+                user.setLast_login(LocalDateTime.now());
+                repo.save(user);
+                return user;
+                /*return repo.findByEmail(loginDTO.getEmail());*/
             }
             else
             {
