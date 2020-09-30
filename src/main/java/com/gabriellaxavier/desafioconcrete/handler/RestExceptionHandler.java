@@ -70,13 +70,13 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<?> handleArgument(HttpMessageNotReadableException argument){
+    public ResponseEntity<?> handleArgument(MethodArgumentTypeMismatchException argument){
 
         ExceptionDetails exceptionDetails = ExceptionDetails.ResourceNotFoundBuilder
                 .newBuilder()
                 .message(argument.getMessage())
                 .build();
 
-        return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionDetails, HttpStatus.BAD_REQUEST);
     }
 }
