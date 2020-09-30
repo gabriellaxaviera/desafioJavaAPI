@@ -75,7 +75,7 @@ Observando que, um ou mais números de telefone, devem estar no mesmo formato qu
 - https://desafio-java-api-gabriella.herokuapp.com/userprofile/{id}
 
 - Recebe no header da requisição o Token do usuário, informado no cadastro
-> Token 5dc4913e-0355-11eb-adc1-0242ac120002 
+> key: Token                        / value: 5dc4913e-0355-11eb-adc1-0242ac120002 
             
 Recebe no path da requisição o id do usuário, também informado no cadastro
 > /userprofile/5dc4913e-0355-11eb-adc1-0242ac120002
