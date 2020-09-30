@@ -143,7 +143,6 @@ public class UserService {
                 user.setLast_login(LocalDateTime.now());
                 repo.save(user);
                 return user;
-                /*return repo.findByEmail(loginDTO.getEmail());*/
             }
             else
             {
